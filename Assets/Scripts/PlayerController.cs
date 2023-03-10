@@ -15,11 +15,12 @@ public class PlayerController : MonoBehaviour
     float jumpForce = 10;
     private Rigidbody playerRb;
     bool isOnGround = true;
+    bool IsDead = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        Cursor.lockState = CursorLockMode.Locked;
         playerRb = GetComponent<Rigidbody>();
     }
 
@@ -35,8 +36,8 @@ public class PlayerController : MonoBehaviour
 
         //look boi
         Mouseturn.x += Input.GetAxis("Mouse X") * sesitivity;
-
-        transform.localRotation = Quaternion.Euler(0, Mouseturn.x,0);
+        Mouseturn.y += Input.GetAxis("Mouse Y") * sesitivity;
+        transform.localRotation = Quaternion.Euler(-Mouseturn.y, Mouseturn.x,0);
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
