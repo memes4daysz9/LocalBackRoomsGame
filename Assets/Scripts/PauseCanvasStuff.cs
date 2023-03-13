@@ -14,13 +14,6 @@ public class PauseCanvasStuff : MonoBehaviour
     // Update is called once per frame
     void Update(){
     
-    if(Input.GetKeyDown(KeyCode.A) == true)
-    {
-         Canvas.SetActive(true);
-    }
-    else
-    {
-        Canvas.SetActive(false);
-    }
+    
     }
 }

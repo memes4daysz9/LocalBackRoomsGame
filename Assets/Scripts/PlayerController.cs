@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     public bool isSprinting;
     public Vector2 Mouseturn;
     public float  sesitivity = 20.01f;
-    float jumpForce = 10;
+    float jumpForce = 5;
     private Rigidbody playerRb;
     bool isOnGround = true;
     bool IsDead = false;

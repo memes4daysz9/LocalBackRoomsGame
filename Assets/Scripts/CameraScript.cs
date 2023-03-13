@@ -10,7 +10,7 @@ public class CameraLook : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-    }
+    }//yufu
 
     // Update is called once per frame
     void Update()
