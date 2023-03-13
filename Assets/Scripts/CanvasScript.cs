@@ -1,13 +1,14 @@
 using UnityEngine;
  using System.Collections;
  
- public class Pause : MonoBehaviour {
+ public class CanvasScript : MonoBehaviour {
      
      public GameObject Canvas;
      public GameObject Camera;
      
  
      void Start(){
+
          Canvas.gameObject.SetActive (false);
      }
  
