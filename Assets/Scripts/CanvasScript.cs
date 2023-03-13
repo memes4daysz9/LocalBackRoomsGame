@@ -4,7 +4,7 @@ using UnityEngine;
  public class CanvasScript : MonoBehaviour {
      
      public GameObject Canvas;
-     public GameObject Camera;
+     
      
  
      void Start(){
@@ -13,8 +13,11 @@ using UnityEngine;
      }
  
      void Update () {
-         if (Input.GetKeyDown ("escape")) {
+         if (Input.GetKeyDown ("Escape")) {
              Canvas.gameObject.SetActive (true);
+         }
+         if(Input.GetKeyDown ("Escape")) {
+            Canvas.gameObject.SetActive(false);
          }
      }
      
