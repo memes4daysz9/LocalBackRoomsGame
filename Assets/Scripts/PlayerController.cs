@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         playerRb = GetComponent<Rigidbody>();
         CanavasGO.SetActive(false);
+        IsGameOn = true;
     }
 
     // Update is called once per frame
