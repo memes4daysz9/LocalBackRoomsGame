@@ -6,9 +6,9 @@ public class PlayerController : MonoBehaviour
 {
     float VerticalMovement;
     float HorizontalMovement;
-    float Movespeed = 1;
-    float SprintSpeed = 4;
-    float InitialMoveSpeed = 1;
+    float Movespeed = 3.5;
+    float SprintSpeed = 8;
+    float InitialMoveSpeed = 3.5;
     public bool isSprinting;
     public Vector2 Mouseturn;
     public float  sesitivity = 20.01f;
@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody playerRb;
     bool isOnGround = true;
     bool IsDead = false;
+    float health = 100;
 
     public GameObject CanavasGO;
 
@@ -67,6 +68,12 @@ public class PlayerController : MonoBehaviour
             CanavasGO.SetActive(true);
         }else{
             CanavasGO.SetActive(false);
+        }
+
+        if(health < 0.1){
+            IsDead = true;
+        }else {
+            IsDead=false;
         }
 
     }
