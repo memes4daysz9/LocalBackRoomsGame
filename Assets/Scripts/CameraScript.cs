@@ -6,6 +6,7 @@ public class CameraLook : MonoBehaviour
 {
     public Vector2 Mouseturn;
     public float  sesitivity = 20.01f;
+    
     // Start is called before the first frame update
     void Start()
     {
