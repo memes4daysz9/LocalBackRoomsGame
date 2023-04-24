@@ -6,9 +6,9 @@ public class PlayerController : MonoBehaviour
 {
     float VerticalMovement;
     float HorizontalMovement;
-    float Movespeed = 3.5;
-    float SprintSpeed = 8;
-    float InitialMoveSpeed = 3.5;
+    float Movespeed = 3.5f;
+    float SprintSpeed = 8f;
+    float InitialMoveSpeed = 3.5f;
     public bool isSprinting;
     public Vector2 Mouseturn;
     public float  sesitivity = 20.01f;
