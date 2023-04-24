@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     public GameObject CanavasGO;
 
     bool IsGameOn = false;
+    bool isClimbing = false;
+    bool IsAmoungUs = false;//isventing
 
     // Start is called before the first frame update
     void Start()
@@ -34,12 +36,16 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        VerticalMovement = Input.GetAxis("Vertical");
-        HorizontalMovement = Input.GetAxis("Horizontal");
+        if (IsGameOn == true){        
+            VerticalMovement = Input.GetAxis("Vertical");
+            HorizontalMovement = Input.GetAxis("Horizontal");
 
-
-        transform.Translate(Vector3.forward * VerticalMovement * Movespeed * Time.deltaTime);
-        transform.Translate(Vector3.right * HorizontalMovement * Movespeed * Time.deltaTime);
+            if (isClimbing == false){
+                transform.Translate(Vector3.forward * VerticalMovement * Movespeed * Time.deltaTime);
+                transform.Translate(Vector3.right * HorizontalMovement * Movespeed * Time.deltaTime);
+            }else{
+                transform.Translate(Vector3.up * VerticalMovement * Movespeed * Time.deltaTime);
+            }}
 
         //look boi
         Mouseturn.x += Input.GetAxis("Mouse X") * sesitivity;
@@ -80,6 +86,10 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter (Collision collision){
         if (collision.gameObject.CompareTag("Ground")){
             isOnGround = true;
+        }if (collision.gameObject.CompareTag("Ladder")){
+            isClimbing = true;
+        }if (collision.gameObject.CompareTag("Vent")){//AMOGUS NGL
+            IsAmoungUs = true;
         }
     }
 }
