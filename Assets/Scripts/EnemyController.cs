@@ -7,7 +7,7 @@ public class EnemyController : MonoBehaviour
     float rotator;//this float is the variable that rotates the raycaster to find the player
     public Rigidbody EnemyRB; //variable moment
     public GameObject player;
-    float speed = 1.5f;
+    float speed = 2.5f;
     Vector3 lookDirecton;
     public Vector3 KeepTransform;
     public Vector3 ZeroMoment;
@@ -51,7 +51,7 @@ public class EnemyController : MonoBehaviour
         
         RaycastHit attack;
 
-        if (Physics.Raycast(transform.position, transform.TransformDirection(lookDirecton), out attack, 150) ){
+        if (Physics.Raycast(transform.position, transform.TransformDirection(lookDirecton), out attack, Mathf.Infinity) ){
             if (attack.collider.CompareTag("Player")){
 
                 EnemyRB.transform.Translate(lookDirecton* speed * Time.deltaTime); //more ai stuff
