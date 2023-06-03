@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    float rotator;//this float is the variable that rotates the raycaster to find the player
-    public Rigidbody EnemyRB; //variable moment
+    float rotator;
+    public Rigidbody EnemyRB;
     public GameObject player;
-    float speed = 2.5f;
+    float speed = 3.5f;
     Vector3 lookDirecton;
     public Vector3 KeepTransform;
     public Vector3 ZeroMoment;
@@ -16,83 +16,66 @@ public class EnemyController : MonoBehaviour
     public float z;
     int randomer;
     bool HasLocation = false;
-    public bool isdead;
-    bool reset;
+    bool turnoffRotation;
 
-    
-    
-    
-    // Start is called before the first frame update
     void Start()
     {
-
-        
-        player = GameObject.Find("Player"); //get other stuff
-        InvokeRepeating("randomThing",3,3);
-        InvokeRepeating("randomMove",3,3);
-        
+        player = GameObject.Find("Player");
+        InvokeRepeating("randomThing", 3, 3);
+        InvokeRepeating("randomMove", 3, 3);
     }
 
-    // Update is called once per frame
-    void Update()
+void Update()
+{
+    lookDirecton = (player.transform.position - transform.position).normalized;
+
+    RaycastHit playerHit;
+    bool hasLineOfSight = Physics.Raycast(transform.position, lookDirecton, out playerHit, Mathf.Infinity);
+    if (hasLineOfSight && playerHit.collider.CompareTag("Player"))
     {
-        if(isdead){
-            HasLocation = false;
+        EnemyRB.AddForce(lookDirecton * speed);
+        EnemyRB.transform.RotateAround(transform.position, transform.up + lookDirecton, Time.deltaTime);
+        KeepTransform = player.transform.position;
+    }
+    else
+    {
+        RaycastHit obstacleHit;
+        bool hasObstacle = Physics.SphereCast(transform.position, 0.5f, lookDirecton, out obstacleHit, 0.5f);
+        if (hasObstacle)
+        {
+            Vector3 avoidanceDirection = Vector3.Reflect(lookDirecton, obstacleHit.normal);
+            EnemyRB.AddForce(avoidanceDirection * speed);
         }
-
-        
-        if (reset == true){
-            KeepTransform = ZeroMoment;
-        }
-
-        lookDirecton = (player.transform.position - transform.position); // ai momento numero dos
-        
-
-        
-        RaycastHit attack;
-
-        if (Physics.Raycast(transform.position, transform.TransformDirection(lookDirecton), out attack, Mathf.Infinity) ){
-            if (attack.collider.CompareTag("Player")){
-
-                EnemyRB.transform.Translate(lookDirecton* speed * Time.deltaTime); //more ai stuff
-
-                EnemyRB.transform.RotateAround(transform.position,transform.up + lookDirecton,Time.deltaTime);
-
-                Debug.DrawRay(transform.position, lookDirecton, Color.green);
-                HasLocation = true;
-                reset = false;
-            }else{
-                if (HasLocation == true){
-                    KeepPosDataFunc();
-                }
-                
-                if ((KeepTransform.x > ZeroMoment.x)&& (KeepTransform.z > ZeroMoment.z)){
-                    EnemyRB.AddForce(KeepTransform * 20);
-                    reset = true;
-                }
-            //move everywhere when no human
-             
-
-         
-        
-            
-
-        }
-        }}
-    private void OnCollisionEnter(Collision collision){
-        if (collision.gameObject.CompareTag("Respawn")){
-            randomMove();
-            randomThing();
+        else
+        {
+            EnemyRB.AddForce(lookDirecton * speed);
         }
     }
-    
-    void randomThing(){
-        randomer = -Random.Range(-5,5) * 60;
+}
+
+
+
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Hit Player");
+        }
+        randomMove();
+        randomThing();
     }
-    void randomMove(){
-        EnemyRB.AddForce(randomer,1,randomer);
+
+    void randomThing()
+    {
+        if (turnoffRotation == false){
+        randomer = -Random.Range(-5, 5) * 60;}
     }
-    void KeepPosDataFunc(){
-        KeepTransform = (player.transform.position);
+
+    void randomMove()
+    {
+        if (turnoffRotation == false){
+        EnemyRB.AddForce(randomer, 1, randomer);}
     }
 }
