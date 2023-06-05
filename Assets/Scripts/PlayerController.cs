@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     float InitialMoveSpeed = 3.5f;
     public bool isSprinting;
     public Vector2 Mouseturn;
-    public float  sesitivity = 20.01f;
+    public float  sesitivity = 200.5f;
     float jumpForce = 5;
     private Rigidbody playerRb;
     bool isOnGround = true;
@@ -48,8 +48,8 @@ public class PlayerController : MonoBehaviour
             }}
 
         //look boi
-        Mouseturn.x += Input.GetAxis("Mouse X") * sesitivity;
-        Mouseturn.y += Input.GetAxis("Mouse Y") * sesitivity;
+        Mouseturn.x += Input.GetAxis("Mouse X") * sesitivity * 0.11f;
+        Mouseturn.y += Input.GetAxis("Mouse Y") * sesitivity * 0.11f;
         transform.localRotation = Quaternion.Euler(-Mouseturn.y, Mouseturn.x,0);
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
