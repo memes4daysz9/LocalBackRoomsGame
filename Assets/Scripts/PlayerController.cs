@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -16,26 +18,36 @@ public class PlayerController : MonoBehaviour
     private Rigidbody playerRb;
     bool isOnGround = true;
     bool IsDead = false;
-    float health = 100;
+    public float health = 100;
 
     public GameObject CanavasGO;
 
-    bool IsGameOn = false;
+    public bool IsGameOn = true;
     bool isClimbing = false;
     bool IsAmoungUs = false;//isventing
+    public TextMeshProUGUI GameOverText;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         playerRb = GetComponent<Rigidbody>();
-        CanavasGO.SetActive(false);
+        
         IsGameOn = true;
+
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(health == 0){
+            IsGameOn = false;
+            GameOverText.text = "GameOver";
+            Debug.Log("GameOver");
+
+        }
         if (IsGameOn == true){        
             VerticalMovement = Input.GetAxis("Vertical");
             HorizontalMovement = Input.GetAxis("Horizontal");
@@ -70,11 +82,7 @@ public class PlayerController : MonoBehaviour
             isOnGround = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.P) && IsGameOn){
-            CanavasGO.SetActive(true);
-        }else{
-            CanavasGO.SetActive(false);
-        }
+        
 
         if(health < 0.1){
             IsDead = true;
@@ -90,6 +98,8 @@ public class PlayerController : MonoBehaviour
             isClimbing = true;
         }if (collision.gameObject.CompareTag("Vent")){//AMOGUS NGL
             IsAmoungUs = true;
+        }if (collision.gameObject.CompareTag("Enemy")){
+            health -= 50;
         }
     }
 }
