@@ -17,7 +17,7 @@ public class EnemyController : MonoBehaviour
     int randomer;
     bool HasLocation = false;
     bool turnoffRotation;
-
+    
     void Start()
     {
         player = GameObject.Find("Player");

@@ -9,16 +9,17 @@ public class PlayerController : MonoBehaviour
     float VerticalMovement;
     float HorizontalMovement;
     float Movespeed = 3.5f;
-    float SprintSpeed = 8f;
+    float SprintSpeed = 11.0f;
     float InitialMoveSpeed = 3.5f;
     public bool isSprinting;
     public Vector2 Mouseturn;
     public float  sesitivity = 200.5f;
     float jumpForce = 5;
-    private Rigidbody playerRb;
+    public Rigidbody playerRb;
     bool isOnGround = true;
     bool IsDead = false;
     public float health = 100;
+    public float stamina = 100;
 
     public GameObject CanavasGO;
 
@@ -26,8 +27,18 @@ public class PlayerController : MonoBehaviour
     bool isClimbing = false;
     bool IsAmoungUs = false;//isventing
     public TextMeshProUGUI GameOverText;
-    
 
+    public Slider HealthBarSlider;
+    public Slider StaminaBarSlider;
+
+    public float maxStamina = 100f;
+    public float staminaDecreaseRate = 10f;
+    public float staminaIncreaseRate = 20f;
+    public float minStaminaToRun = 10f;
+
+    private float currentStamina;
+    
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -36,12 +47,20 @@ public class PlayerController : MonoBehaviour
         
         IsGameOn = true;
 
-        
+        currentStamina = maxStamina;
     }
 
+
+
+    
     // Update is called once per frame
     void Update()
     {
+        HealthBarSlider.value = health; //health bar slider moment
+        StaminaBarSlider.value = stamina;
+
+        stamina = currentStamina;
+
         if(health == 0){
             IsGameOn = false;
             GameOverText.text = "GameOver";
@@ -64,16 +83,40 @@ public class PlayerController : MonoBehaviour
         Mouseturn.y += Input.GetAxis("Mouse Y") * sesitivity * 0.11f;
         transform.localRotation = Quaternion.Euler(-Mouseturn.y, Mouseturn.x,0);
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+
+        
+
+
+// Decrease stamina while left shift is held down
+        if (Input.GetKey(KeyCode.LeftShift) && currentStamina > 0f)
         {
-            Movespeed += SprintSpeed;
-            isSprinting = true;
+            currentStamina -= staminaDecreaseRate * Time.deltaTime;
+            currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        // Increase stamina when left shift is released
+        else if (!Input.GetKey(KeyCode.LeftShift) && currentStamina < maxStamina)
+    {
+        currentStamina += staminaIncreaseRate * Time.deltaTime;
+        currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
+    }
+
+        // Check if the player has enough stamina to run
+        bool canRun = currentStamina >= minStaminaToRun;
+
+        // Run when both left shift is pressed and stamina is sufficient
+        if (Input.GetKey(KeyCode.LeftShift) && canRun)
         {
-            Movespeed = InitialMoveSpeed;
-            isSprinting = false;
+            Run();
+            
+        }else{
+            NoRun();   
         }
+
+
+
+
+    
+        
 
 
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
@@ -99,7 +142,14 @@ public class PlayerController : MonoBehaviour
         }if (collision.gameObject.CompareTag("Vent")){//AMOGUS NGL
             IsAmoungUs = true;
         }if (collision.gameObject.CompareTag("Enemy")){
-            health -= 50;
+            health -= 25;
         }
+    }
+    void Run(){
+        Movespeed = SprintSpeed;
+        isSprinting = true;
+    }void NoRun(){
+        Movespeed = InitialMoveSpeed;
+        isSprinting = false;
     }
 }
