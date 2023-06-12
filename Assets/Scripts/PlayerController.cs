@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     float VerticalMovement;
     float HorizontalMovement;
     float Movespeed = 3.5f;
-    float SprintSpeed = 11.0f;
+    float SprintSpeed = 12.5f;
     float InitialMoveSpeed = 3.5f;
     public bool isSprinting;
     public Vector2 Mouseturn;
@@ -32,8 +32,8 @@ public class PlayerController : MonoBehaviour
     public Slider StaminaBarSlider;
 
     public float maxStamina = 100f;
-    public float staminaDecreaseRate = 10f;
-    public float staminaIncreaseRate = 20f;
+    public float staminaDecreaseRate = 5f;
+    public float staminaIncreaseRate = 100f;
     public float minStaminaToRun = 10f;
 
     private float currentStamina;
@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
         // Increase stamina when left shift is released
         else if (!Input.GetKey(KeyCode.LeftShift) && currentStamina < maxStamina)
     {
-        currentStamina += staminaIncreaseRate * Time.deltaTime;
+        currentStamina += staminaIncreaseRate * Time.deltaTime * 10;
         currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
     }
 

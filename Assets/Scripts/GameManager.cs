@@ -24,7 +24,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Level1.SetActive(false);
-        
+        PD = FindObjectOfType<PlayerDetection>();
+        Lvl01 = FindObjectOfType<Level0To1Door>();
     }
 
     // Update is called once per frame

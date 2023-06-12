@@ -8,7 +8,7 @@ public class PlayerDetection : MonoBehaviour
     public bool startChase = false; 
     public Transform playerStart; 
     public GameObject LevelEx;
-    public GameObject Level0;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +22,7 @@ public class PlayerDetection : MonoBehaviour
 
     }
     private void OnTriggerEnter (Collider other){
+        LevelEx.SetActive(true);
         startChase = true;
         playerGO.transform.position = playerStart.transform.position;
         
