@@ -5,11 +5,11 @@ using UnityEngine;
 public class MoveEnemy : MonoBehaviour
 {
     float speed = 5.2f;
-    PlayerDetection GMScript;
+    Teleporter GMScript;
     // Start is called before the first frame update
     void Start()
     {
-        GMScript = FindObjectOfType<PlayerDetection>();
+        GMScript = FindObjectOfType<Teleporter>();
         
     }
 
