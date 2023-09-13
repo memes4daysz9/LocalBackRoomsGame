@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour
     public GameObject player;
     float speed = 3.5f;
     Vector3 lookDirecton;
+    Vector3 LostSightDir;
     public Vector3 KeepTransform;
     public Vector3 ZeroMoment;
     public float x;
@@ -34,23 +35,12 @@ void Update()
     if (hasLineOfSight && playerHit.collider.CompareTag("Player"))
     {
         EnemyRB.AddForce(lookDirecton * speed);
-        EnemyRB.transform.RotateAround(transform.position, transform.up + lookDirecton, Time.deltaTime);
         KeepTransform = player.transform.position;
+    }else{
+        LostSightDir = (player.transform.position - transform.position) - KeepTransform;
+        EnemyRB.AddForce(-LostSightDir * speed * Time.deltaTime);
     }
-    else
-    {
-        RaycastHit obstacleHit;
-        bool hasObstacle = Physics.SphereCast(transform.position, 0.5f, lookDirecton, out obstacleHit, 0.5f);
-        if (hasObstacle)
-        {
-            Vector3 avoidanceDirection = Vector3.Reflect(lookDirecton, obstacleHit.normal);
-            EnemyRB.AddForce(avoidanceDirection * speed);
-        }
-        else
-        {
-            EnemyRB.AddForce(lookDirecton * speed);
-        }
-    }
+
 }
 
 

@@ -9,7 +9,7 @@ public class Teleporter : MonoBehaviour
     public GameObject LevelTeleportingFrom;
     public GameObject LevelTeleportingTO;
     public bool startChase;
-    public GameObject Level
+    public GameObject Level;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,8 +26,7 @@ public class Teleporter : MonoBehaviour
         PutPlayerHere.transform.position = WhereToTeleport.transform.position;
         unseePastLevel();
         SeeCurretLevel();
-        if ()
-        startChase = true;
+        
         
     }
     private void unseePastLevel(){

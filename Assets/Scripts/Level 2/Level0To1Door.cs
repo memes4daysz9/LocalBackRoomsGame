@@ -9,7 +9,7 @@ public class Level0To1Door : MonoBehaviour
     public Transform playerStart; 
     public GameObject Level1;
     public GameObject Level0;
-
+    public GameObject Level2;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +22,7 @@ public class Level0To1Door : MonoBehaviour
         if (startLevel1){
             Level1.SetActive(true);
             Level0.SetActive(false);
+            Level2.SetActive(true);
         }
     }
     private void OnTriggerEnter(Collider other){

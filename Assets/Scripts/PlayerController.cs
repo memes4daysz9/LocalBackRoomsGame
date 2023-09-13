@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    public bool IsInvertedMove;
     float VerticalMovement;
     float HorizontalMovement;
     float Movespeed = 3.5f;
@@ -37,7 +38,8 @@ public class PlayerController : MonoBehaviour
     public float minStaminaToRun = 10f;
 
     private float currentStamina;
-    
+    public Rigidbody Camera;
+    public bool startChase;
     
     // Start is called before the first frame update
     void Start()
@@ -50,8 +52,14 @@ public class PlayerController : MonoBehaviour
         currentStamina = maxStamina;
     }
 
-
-
+IEnumerator LagBack(){
+    yield return new WaitForSeconds(0.1f);
+    IsInvertedMove = false;
+}
+void OffInvert(){
+    LagBack();
+    IsInvertedMove = false;
+}
     
     // Update is called once per frame
     void Update()
@@ -72,8 +80,13 @@ public class PlayerController : MonoBehaviour
             HorizontalMovement = Input.GetAxis("Horizontal");
 
             if (isClimbing == false){
-                transform.Translate(Vector3.forward * VerticalMovement * Movespeed * Time.deltaTime);
-                transform.Translate(Vector3.right * HorizontalMovement * Movespeed * Time.deltaTime);
+                if (IsInvertedMove == false){
+                    transform.Translate(Vector3.forward * VerticalMovement * Movespeed * Time.deltaTime);
+                    transform.Translate(Vector3.right * HorizontalMovement * Movespeed * Time.deltaTime);
+                }else {
+                    transform.Translate(Vector3.back * VerticalMovement * Movespeed * Time.deltaTime * 1);
+                    transform.Translate(Vector3.left * HorizontalMovement * Movespeed * Time.deltaTime * 1);
+                }
             }else{
                 transform.Translate(Vector3.up * VerticalMovement * Movespeed * Time.deltaTime);
             }}
@@ -81,7 +94,8 @@ public class PlayerController : MonoBehaviour
         //look boi
         Mouseturn.x += Input.GetAxis("Mouse X") * sesitivity * 0.11f;
         Mouseturn.y += Input.GetAxis("Mouse Y") * sesitivity * 0.11f;
-        transform.localRotation = Quaternion.Euler(-Mouseturn.y, Mouseturn.x,0);
+        transform.localRotation = Quaternion.Euler(0, Mouseturn.x,0);
+        Camera.transform.localRotation = Quaternion.Euler(-Mouseturn.y,0,0);
 
 
         
@@ -137,13 +151,23 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter (Collision collision){
         if (collision.gameObject.CompareTag("Ground")){
             isOnGround = true;
-        }if (collision.gameObject.CompareTag("Ladder")){
-            isClimbing = true;
-        }if (collision.gameObject.CompareTag("Vent")){//AMOGUS NGL
-            IsAmoungUs = true;
-        }if (collision.gameObject.CompareTag("Enemy")){
-            health -= 25;
+            IsInvertedMove =false;}
+        if (collision.gameObject.CompareTag("Ladder")){
+            isClimbing = true;}
+        if (collision.gameObject.CompareTag("Vent")){//AMOGUS NGL
+            IsAmoungUs = true;}
+        if (collision.gameObject.CompareTag("Enemy")){
+            health -= 25;}
+            
+        if(collision.gameObject.CompareTag("Wall")){
+            IsInvertedMove = true;
+            transform.Translate(Vector3.up * 0.05f);
+            LagBack();
+        }else{
+            IsInvertedMove = false;
         }
+        if (collision.gameObject.CompareTag("StartChase")){
+            startChase = true;}
     }
     void Run(){
         Movespeed = SprintSpeed;
