@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
     private float currentStamina;
     public Rigidbody Camera;
     public bool startChase;
+    int AddForceSpeed = 200;
     
     // Start is called before the first frame update
     void Start()
@@ -81,11 +82,11 @@ void OffInvert(){
 
             if (isClimbing == false){
                 if (IsInvertedMove == false){
-                    transform.Translate(Vector3.forward * VerticalMovement * Movespeed * Time.deltaTime);
-                    transform.Translate(Vector3.right * HorizontalMovement * Movespeed * Time.deltaTime);
+                    playerRb.AddForce(Vector3.forward * VerticalMovement * Movespeed * Time.deltaTime * AddForceSpeed);
+                    playerRb.AddForce(Vector3.right * HorizontalMovement * Movespeed * Time.deltaTime * AddForceSpeed);
                 }else {
-                    transform.Translate(Vector3.back * VerticalMovement * Movespeed * Time.deltaTime * 1);
-                    transform.Translate(Vector3.left * HorizontalMovement * Movespeed * Time.deltaTime * 1);
+                    playerRb.AddForce(Vector3.back * VerticalMovement * Movespeed * Time.deltaTime * 1 * AddForceSpeed);
+                    playerRb.AddForce(Vector3.left * HorizontalMovement * Movespeed * Time.deltaTime * 1 * AddForceSpeed);
                 }
             }else{
                 transform.Translate(Vector3.up * VerticalMovement * Movespeed * Time.deltaTime);
